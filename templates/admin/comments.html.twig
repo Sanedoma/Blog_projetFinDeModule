@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des Commentaires{% endblock %}
+
+{% block body %}
+    <div class="container-fluid mt-5">
+        <h1 class="mb-4">Gestion des Commentaires</h1>
+
+        <div class="card">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Article</th>
+                            <th>Auteur</th>
+                            <th>Contenu</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for comment in comments %}
+                            <tr>
+                                <td><strong>{{ comment.post.title }}</strong></td>
+                                <td>{{ comment.user.firstName }} {{ comment.user.lastName }}</td>
+                                <td>{{ comment.content|slice(0, 50) }}{% if comment.content|length > 50 %}...{% endif %}</td>
+                                <td>{{ comment.createAt|date('d/m/Y H:i') }}</td>
+                                <td>
+                                    <a href="{{ path('app_post_show', {'id': comment.post.id}) }}" class="btn btn-sm btn-info">Voir l'article</a>
+                                    <form method="POST" action="{{ path('app_comment_delete', {'postId': comment.post.id, 'id': comment.id}) }}" style="display:inline;">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comment.id) }}">
+                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr ?')">Supprimer</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-4">Aucun commentaire</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <a href="{{ path('app_admin_dashboard') }}" class="btn btn-secondary">← Dashboard</a>
+        </div>
+    </div>
+{% endblock %}

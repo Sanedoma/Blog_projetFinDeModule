@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <article>
+            <h1>{{ post.title }}</h1>
+            
+            <div class="post-meta mb-4">
+                <small class="text-muted">
+                    Par <strong>{{ post.user.firstName }} {{ post.user.lastName }}</strong> 
+                    | Catégorie: <strong>{{ post.category.name }}</strong>
+                    | Publié le <strong>{{ post.publishAt|date('d/m/Y') }}</strong>
+                </small>
+            </div>
+
+            {% if post.picture %}
+                <img src="{{ post.picture }}" alt="{{ post.title }}" class="img-fluid mb-4" style="max-width: 600px;">
+            {% endif %}
+
+            <div class="post-content mb-5">
+                {{ post.content }}
+            </div>
+
+            {% if is_granted('ROLE_ADMIN') %}
+                <div class="mb-4">
+                    <a href="{{ path('app_post_edit', {'id': post.id}) }}" class="btn btn-warning">Éditer</a>
+                    <form method="POST" action="{{ path('app_post_delete', {'id': post.id}) }}" style="display:inline;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ post.id) }}">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr ?')">Supprimer</button>
+                    </form>
+                </div>
+            {% endif %}
+        </article>
+
+        <hr>
+
+        <section class="comments mt-5">
+            <h2>Commentaires ({{ comments|length }})</h2>
+
+            {% if app.user %}
+                <div class="comment-form mb-5">
+                    <h4>Laisser un commentaire</h4>
+                    {{ include('comment/form.html.twig') }}
+                </div>
+            {% else %}
+                <p><a href="{{ path('app_login') }}">Connectez-vous</a> pour laisser un commentaire.</p>
+            {% endif %}
+
+            {% if comments %}
+                <div class="comments-list">
+                    {% for comment in comments %}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ comment.user.firstName }} {{ comment.user.lastName }}</h5>
+                                <small class="text-muted">{{ comment.createAt|date('d/m/Y H:i') }}</small>
+                                <p class="card-text mt-2">{{ comment.content }}</p>
+                                
+                                {% if app.user and (comment.user === app.user or is_granted('ROLE_ADMIN')) %}
+                                    <form method="POST" action="{{ path('app_comment_delete', {'postId': post.id, 'id': comment.id}) }}" style="display:inline;">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comment.id) }}">
+                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr ?')">Supprimer</button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>Aucun commentaire pour le moment.</p>
+            {% endif %}
+        </section>
+
+        <div class="mt-4">
+            <a href="{{ path('app_home') }}" class="btn btn-secondary">← Retour à l'accueil</a>
+        </div>
+    </div>
+{% endblock %}

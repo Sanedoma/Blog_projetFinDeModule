@@ -1,0 +1,7 @@
+{{ form_start(form, {'attr': {'class': 'mb-3'}}) }}
+    <div class="mb-3">
+        {{ form_row(form.content, {'attr': {'placeholder': 'Écrivez votre commentaire...', 'rows': '4'}}) }}
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2">Publier le commentaire</button>
+{{ form_end(form) }}

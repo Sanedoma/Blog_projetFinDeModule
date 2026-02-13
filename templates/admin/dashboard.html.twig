@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard Admin{% endblock %}
+
+{% block body %}
+    <div class="container-fluid mt-5">
+        <h1 class="mb-4">Dashboard Admin</h1>
+
+        <!-- Statistics Cards -->
+        <div class="row mb-5">
+            <div class="col-md-3">
+                <div class="card bg-primary text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">Articles</h5>
+                        <p class="card-text fs-3">{{ totalPosts }}</p>
+                        <a href="{{ path('app_admin_posts') }}" class="btn btn-light btn-sm">Voir</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-success text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">Catégories</h5>
+                        <p class="card-text fs-3">{{ totalCategories }}</p>
+                        <a href="{{ path('app_admin_categories') }}" class="btn btn-light btn-sm">Voir</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-info text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">Commentaires</h5>
+                        <p class="card-text fs-3">{{ totalComments }}</p>
+                        <a href="{{ path('app_admin_comments') }}" class="btn btn-light btn-sm">Voir</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-warning text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">Utilisateurs</h5>
+                        <p class="card-text fs-3">{{ totalUsers }}</p>
+                        <a href="{{ path('app_admin_users') }}" class="btn btn-light btn-sm">Voir</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Posts -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Articles Récents</h5>
+                        <a href="{{ path('app_post_new') }}" class="btn btn-primary btn-sm">+ Nouvel Article</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Titre</th>
+                                    <th>Auteur</th>
+                                    <th>Catégorie</th>
+                                    <th>Commentaires</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for post in posts %}
+                                    <tr>
+                                        <td><strong>{{ post.title }}</strong></td>
+                                        <td>{{ post.user.firstName }} {{ post.user.lastName }}</td>
+                                        <td><span class="badge bg-secondary">{{ post.category.name }}</span></td>
+                                        <td>{{ post.comments|length }}</td>
+                                        <td>{{ post.publishAt|date('d/m/Y') }}</td>
+                                        <td>
+                                            <a href="{{ path('app_post_show', {'id': post.id}) }}" class="btn btn-info btn-sm">Voir</a>
+                                            <a href="{{ path('app_post_edit', {'id': post.id}) }}" class="btn btn-warning btn-sm">Éditer</a>
+                                            <form method="POST" action="{{ path('app_post_delete', {'id': post.id}) }}" style="display:inline;">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ post.id) }}">
+                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr ?')">Supprimer</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="6" class="text-center text-muted">Aucun article</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
