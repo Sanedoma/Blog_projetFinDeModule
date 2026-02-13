@@ -1,0 +1,111 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Profil{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">Mon Profil</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-4 text-center">
+                            {% if user.profilePicture %}
+                                <img src="{{ asset('uploads/profiles/' ~ user.profilePicture) }}" 
+                                     alt="Photo de profil de {{ user.firstName }} {{ user.lastName }}" 
+                                     class="img-fluid rounded-circle" 
+                                     style="max-width: 200px; height: 200px; object-fit: cover;">
+                            {% else %}
+                                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center" 
+                                     style="width: 200px; height: 200px; margin: 0 auto;">
+                                    <i class="fas fa-user" style="font-size: 80px; color: #999;"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-8">
+                            <h3>{{ user.firstName }} {{ user.lastName }}</h3>
+                            <p class="text-muted">
+                                <strong>Email :</strong> {{ user.email }}
+                            </p>
+                            <p class="text-muted">
+                                <strong>Membre depuis :</strong> {{ user.createAt|date('d/m/Y') }}
+                            </p>
+                            {% if user.updateAt %}
+                                <p class="text-muted">
+                                    <strong>Dernière modification :</strong> {{ user.updateAt|date('d/m/Y H:i') }}
+                                </p>
+                            {% endif %}
+                            <p class="text-muted">
+                                <strong>Rôles :</strong> 
+                                {% for role in user.roles %}
+                                    <span class="badge bg-secondary">{{ role }}</span>
+                                {% endfor %}
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <h5>Mes Articles</h5>
+                            {% if user.posts|length > 0 %}
+                                <div class="list-group">
+                                    {% for post in user.posts %}
+                                        <a href="{{ path('app_post_show', {'id': post.id}) }}" class="list-group-item list-group-item-action">
+                                            <div class="d-flex w-100 justify-content-between align-items-center">
+                                                <h6 class="mb-1">{{ post.title }}</h6>
+                                                <small class="text-muted">{{ post.publishAt|date('d/m/Y') }}</small>
+                                            </div>
+                                            <p class="mb-1 text-muted">{{ post.content|slice(0, 100) }}...</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <small class="badge bg-info">{{ post.category.name }}</small>
+                                                <small class="text-muted">{{ post.comments|length }} commentaire(s)</small>
+                                            </div>
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <p class="text-muted">Vous n'avez pas encore publié d'articles.</p>
+                                <a href="{{ path('app_post_new') }}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-plus"></i> Rédiger un article
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <h5>Mes Commentaires</h5>
+                            {% if user.comments|length > 0 %}
+                                <p>Vous avez écrit <strong>{{ user.comments|length }}</strong> commentaire(s).</p>
+                            {% else %}
+                                <p class="text-muted">Vous n'avez pas encore écrit de commentaires.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="d-flex gap-2">
+                        <a href="{{ path('app_profile_edit') }}" class="btn btn-primary">
+                            <i class="fas fa-edit"></i> Modifier mon profil
+                        </a>
+                        <a href="{{ path('app_post_new') }}" class="btn btn-success">
+                            <i class="fas fa-plus"></i> Rédiger un article
+                        </a>
+                        <a href="{{ path('app_home') }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Retour
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

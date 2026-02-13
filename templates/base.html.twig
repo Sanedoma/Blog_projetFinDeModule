@@ -9,44 +9,52 @@
         {# Bootstrap core CSS #}
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        {# Theme CSS - replace this link with the Modern Business CSS if you have a direct CSS URL #}
-        {% block theme_styles %}
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet">
-            <link href="https://cdn.jsdelivr.net/gh/StartBootstrap/startbootstrap-modern-business@master/dist/css/styles.css" rel="stylesheet">
-        {% endblock %}
+        {# FontAwesome Icons #}
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+        {# macOS Design System #}
+        <link href="{{ asset('styles/macos.css') }}" rel="stylesheet">
 
         {% block stylesheets %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </head>
     <body>
-
-        <!-- Navigation (Modern Business style) -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container">
-                <a class="navbar-brand" href="{{ path('app_home') }}">Blog</a>
+        <!-- Dark Mode Toggle Script (Load early) -->
+        <script src="{{ asset('dark-mode.js') }}"></script>
+        
+        <!-- Navigation (macOS Style) -->
+        <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+            <div class="container-lg">
+                <a class="navbar-brand" href="{{ path('app_home') }}">
+                    <i class="fas fa-feather"></i> Blog
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="{{ path('app_home') }}">Accueil</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">À propos</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ path('app_home') }}"><i class="fas fa-home"></i> Accueil</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ path('app_post_index') }}"><i class="fas fa-book"></i> Articles</a></li>
                         {% if app.user %}
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Bonjour {{ app.user.firstName }}</a>
+                                <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user-circle"></i> {{ app.user.firstName }}
+                                </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                                    <li><a class="dropdown-item" href="{{ path('app_profile_index') }}"><i class="fas fa-id-card"></i> Mon profil</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('app_profile_edit') }}"><i class="fas fa-edit"></i> Modifier mon profil</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('app_post_new') }}"><i class="fas fa-plus-circle"></i> Rédiger un article</a></li>
+                                    <li><hr class="dropdown-divider"></li>
                                     {% if is_granted('ROLE_ADMIN') %}
-                                        <li><a class="dropdown-item" href="{{ path('app_admin_dashboard') }}">Dashboard</a></li>
-                                        <li><a class="dropdown-item" href="{{ path('app_post_new') }}">Créer un post</a></li>
+                                        <li><a class="dropdown-item" href="{{ path('app_admin_dashboard') }}"><i class="fas fa-tachometer-alt"></i> Dashboard admin</a></li>
                                         <li><hr class="dropdown-divider"></li>
                                     {% endif %}
-                                    <li><a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
                                 </ul>
                             </li>
                         {% else %}
-                            <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">Connexion</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ path('app_register') }}">Inscription</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}"><i class="fas fa-sign-in-alt"></i> Connexion</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ path('app_register') }}"><i class="fas fa-user-plus"></i> Inscription</a></li>
                         {% endif %}
                     </ul>
                 </div>
@@ -54,14 +62,14 @@
         </nav>
 
         <!-- Page Content -->
-        <main>
+        <main style="min-height: calc(100vh - 200px);">
             {% block body %}{% endblock %}
         </main>
 
-        <!-- Footer -->
-        <footer class="py-5 bg-dark">
-            <div class="container">
-                <p class="m-0 text-center text-white">&copy; {{ "now"|date('Y') }} - Mon Blog</p>
+        <!-- Footer (macOS Style) -->
+        <footer class="mt-5 py-4">
+            <div class="container-lg text-center">
+                <p class="m-0 text-muted">&copy; {{ "now"|date('Y') }} - Mon Blog. Fait avec <i class="fas fa-heart text-danger"></i> en Suisse 🇨🇭</p>
             </div>
         </footer>
 

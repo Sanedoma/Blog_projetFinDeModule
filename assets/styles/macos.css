@@ -1,0 +1,1186 @@
+/* macOS Design System for Web - Light & Dark Glass Mode */
+
+:root {
+    /* Light Mode Colors */
+    --macos-white: #ffffff;
+    --macos-black: #1d1d1f;
+    --macos-gray-1: #f5f5f7;
+    --macos-gray-2: #e8e8ed;
+    --macos-gray-3: #d2d2d7;
+    --macos-gray-4: #a1a1a6;
+    --macos-gray-5: #86868b;
+    --macos-gray-6: #5a5a5f;
+    --macos-blue: #0071e3;
+    --macos-blue-light: #0a84ff;
+    --macos-red: #ff3b30;
+    --macos-green: #34c759;
+    --macos-orange: #ff9500;
+    
+    /* Dark Mode Colors */
+    --dark-bg: #0a0a0b;
+    --dark-bg-secondary: #1a1a1b;
+    --dark-bg-tertiary: #2a2a2b;
+    --dark-text: #f5f5f7;
+    --dark-text-secondary: #a1a1a6;
+    --dark-border: rgba(255, 255, 255, 0.1);
+    --dark-glass: rgba(30, 30, 35, 0.8);
+    --dark-glass-light: rgba(60, 60, 65, 0.6);
+    
+    /* Typography */
+    --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'San Francisco', Helvetica, Arial, sans-serif;
+    --font-weight-light: 300;
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    
+    /* Current theme (light by default) */
+    --bg-color: var(--macos-white);
+    --text-color: var(--macos-black);
+    --surface-color: var(--macos-gray-1);
+    --surface-color-secondary: var(--macos-gray-2);
+    --border-color: rgba(0, 0, 0, 0.1);
+    --glass-color: rgba(255, 255, 255, 0.8);
+    --input-bg: var(--macos-white);
+    --input-border: var(--macos-gray-2);
+    --input-text: var(--macos-black);
+    --muted-text: var(--macos-gray-5);
+}
+
+/* Dark Mode */
+html.dark-mode {
+    --bg-color: var(--dark-bg);
+    --text-color: var(--dark-text);
+    --surface-color: var(--dark-bg-secondary);
+    --surface-color-secondary: var(--dark-bg-tertiary);
+    --border-color: var(--dark-border);
+    --glass-color: var(--dark-glass);
+    --input-bg: var(--dark-bg-tertiary);
+    --input-border: var(--dark-border);
+    --input-text: var(--dark-text);
+    --muted-text: var(--dark-text-secondary);
+    
+    /* Bootstrap table CSS variables override */
+    --bs-table-bg: var(--dark-glass-light);
+    --bs-table-striped-bg: var(--dark-glass);
+    --bs-table-active-bg: var(--dark-glass);
+    --bs-table-hover-bg: var(--dark-glass);
+    --bs-table-border-color: var(--dark-border);
+    --bs-table-color: var(--dark-text);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    font-family: var(--font-family);
+    background: var(--bg-color);
+    color: var(--text-color);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    line-height: 1.6;
+}
+
+/* Typography - Headings */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-color);
+    font-weight: 600;
+    margin-bottom: 1rem;
+    transition: color 0.3s ease;
+}
+
+/* Paragraphs and text */
+p, span, div {
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+
+/* Links */
+a, .nav-link {
+    color: var(--macos-blue);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: var(--macos-blue-light);
+    text-decoration: none;
+}
+
+/* Text utilities */
+.text-muted {
+    color: var(--muted-text) !important;
+}
+
+html.dark-mode .text-muted {
+    color: var(--dark-text-secondary) !important;
+}
+
+.text-secondary {
+    color: var(--muted-text) !important;
+}
+
+html.dark-mode .text-secondary {
+    color: var(--dark-text-secondary) !important;
+}
+
+.text-dark {
+    color: var(--text-color) !important;
+}
+
+.text-light {
+    color: var(--dark-text) !important;
+}
+
+/* Alert boxes */
+.alert {
+    background-color: var(--surface-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.alert-info {
+    background-color: var(--surface-color);
+    border-color: var(--macos-blue-light);
+    color: var(--text-color);
+}
+
+html.dark-mode .alert-info {
+    background-color: rgba(10, 132, 255, 0.1);
+    border-color: rgba(10, 132, 255, 0.3);
+}
+
+.alert-success {
+    background-color: var(--surface-color);
+    border-color: var(--macos-green);
+    color: var(--text-color);
+}
+
+html.dark-mode .alert-success {
+    background-color: rgba(52, 199, 89, 0.1);
+    border-color: rgba(52, 199, 89, 0.3);
+}
+
+.alert-warning {
+    background-color: var(--surface-color);
+    border-color: var(--macos-orange);
+    color: var(--text-color);
+}
+
+html.dark-mode .alert-warning {
+    background-color: rgba(255, 149, 0, 0.1);
+    border-color: rgba(255, 149, 0, 0.3);
+}
+
+.alert-danger {
+    background-color: var(--surface-color);
+    border-color: var(--macos-red);
+    color: var(--text-color);
+}
+
+html.dark-mode .alert-danger {
+    background-color: rgba(255, 59, 48, 0.1);
+    border-color: rgba(255, 59, 48, 0.3);
+}
+
+/* Navigation Bar - macOS Style with Glass */
+.navbar {
+    background: var(--glass-color) !important;
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.5rem 0 !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+html.dark-mode .navbar {
+    background: var(--dark-glass) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-brand {
+    font-weight: 600;
+    font-size: 1.3rem;
+    color: var(--text-color) !important;
+    letter-spacing: -0.5px;
+    transition: color 0.3s ease;
+}
+
+.navbar-brand:hover {
+    color: var(--macos-blue) !important;
+}
+
+.nav-link {
+    color: var(--macos-gray-5) !important;
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin: 0 0.5rem;
+    transition: color 0.3s ease;
+}
+
+html.dark-mode .nav-link {
+    color: var(--dark-text-secondary) !important;
+}
+
+.nav-link:hover {
+    color: var(--macos-blue) !important;
+}
+
+.nav-link.active {
+    color: var(--macos-blue) !important;
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    background: var(--glass-color) !important;
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1) !important;
+    padding: 0.5rem 0 !important;
+    margin-top: 0.5rem !important;
+    transition: all 0.3s ease;
+}
+
+html.dark-mode .dropdown-menu {
+    background: var(--dark-glass) !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3) !important;
+}
+
+.dropdown-item {
+    color: var(--text-color) !important;
+    font-weight: 500;
+    padding: 0.7rem 1.2rem !important;
+    transition: background-color 0.2s ease;
+    font-size: 0.95rem;
+}
+
+.dropdown-item:hover {
+    background-color: var(--surface-color) !important;
+    color: var(--macos-blue) !important;
+}
+
+.dropdown-divider {
+    background-color: var(--border-color) !important;
+    margin: 0.3rem 0 !important;
+}
+
+/* Buttons */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.6rem 1.2rem;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-primary {
+    background-color: var(--macos-blue);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 113, 227, 0.3);
+}
+
+.btn-secondary {
+    background-color: var(--macos-gray-3);
+    color: var(--macos-black);
+}
+
+.btn-secondary:hover {
+    background-color: var(--macos-gray-4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+html.dark-mode .btn-secondary {
+    background-color: var(--dark-bg-tertiary);
+    color: var(--dark-text);
+    border: 1px solid var(--dark-border);
+}
+
+html.dark-mode .btn-secondary:hover {
+    background-color: var(--dark-glass-light);
+}
+
+.btn-success {
+    background-color: var(--macos-green);
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #31a24c;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(52, 199, 89, 0.3);
+}
+
+.btn-danger {
+    background-color: var(--macos-red);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #e73321;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(255, 59, 48, 0.3);
+}
+
+.btn-warning {
+    background-color: var(--macos-orange);
+    color: white;
+}
+
+.btn-warning:hover {
+    background-color: #e68900;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(255, 149, 0, 0.3);
+}
+
+.btn-outline-primary {
+    color: var(--macos-blue);
+    border: 2px solid var(--macos-blue);
+    background-color: transparent;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--macos-blue);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-outline-info {
+    color: var(--macos-blue-light);
+    border: 2px solid var(--macos-blue-light);
+    background-color: transparent;
+}
+
+.btn-outline-info:hover {
+    background-color: var(--macos-blue-light);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-outline-danger {
+    color: var(--macos-red);
+    border: 2px solid var(--macos-red);
+    background-color: transparent;
+}
+
+.btn-outline-danger:hover {
+    background-color: var(--macos-red);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-light {
+    background-color: var(--macos-gray-1);
+    color: var(--macos-black);
+    border: none;
+}
+
+html.dark-mode .btn-light {
+    background-color: var(--dark-bg-tertiary);
+    color: var(--dark-text);
+    border: 1px solid var(--dark-border);
+}
+
+.btn-light:hover {
+    background-color: var(--macos-gray-2);
+    transform: translateY(-2px);
+}
+
+html.dark-mode .btn-light:hover {
+    background-color: var(--dark-glass-light);
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 12px;
+    background: var(--glass-color);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+html.dark-mode .card {
+    background: var(--dark-glass-light);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card:hover {
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+    transform: translateY(-4px);
+}
+
+html.dark-mode .card:hover {
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--macos-blue) 0%, #0056b3 100%) !important;
+    border: none;
+    padding: 1.5rem;
+    color: white !important;
+}
+
+.card-body {
+    background-color: var(--bs-body-color);
+    padding: 2rem;
+    color: var(--text-color);
+}
+
+/* Form Controls - Complete Styling */
+.form-control,
+.form-select,
+textarea.form-control {
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-family: var(--font-family);
+    font-size: 0.95rem;
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+html.dark-mode .form-control,
+html.dark-mode .form-select,
+html.dark-mode textarea.form-control {
+    background-color: var(--dark-bg-tertiary);
+    border-color: var(--dark-border);
+}
+
+.form-control:focus,
+.form-select:focus,
+textarea.form-control:focus {
+    border-color: var(--macos-blue);
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+    background-color: var(--input-bg);
+    color: var(--input-text);
+}
+
+html.dark-mode .form-control:focus,
+html.dark-mode .form-select:focus,
+html.dark-mode textarea.form-control:focus {
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.2);
+}
+
+.form-control::placeholder {
+    color: var(--macos-gray-4);
+    opacity: 0.7;
+}
+
+html.dark-mode .form-control::placeholder {
+    color: var(--dark-text-secondary);
+}
+
+.form-control:disabled,
+.form-select:disabled {
+    background-color: var(--surface-color);
+    opacity: 0.6;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Labels and Form Text */
+label {
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.form-label {
+    color: var(--text-color);
+}
+
+.form-text {
+    color: var(--muted-text);
+    transition: color 0.3s ease;
+}
+
+html.dark-mode .form-text {
+    color: var(--dark-text-secondary);
+}
+
+/* Horizontal Rule */
+hr {
+    border-color: var(--border-color);
+    margin: 1.5rem 0;
+    transition: border-color 0.3s ease;
+}
+
+html.dark-mode hr {
+    border-color: var(--dark-border);
+}
+
+/* Input Groups */
+.input-group {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.input-group-text {
+    background-color: var(--surface-color);
+    border: 1px solid var(--input-border);
+    color: var(--text-color);
+    border-radius: 8px 0 0 8px;
+}
+
+html.dark-mode .input-group-text {
+    background-color: var(--dark-bg-tertiary);
+    border-color: var(--dark-border);
+}
+
+.input-group .form-control {
+    border-radius: 0 8px 8px 0;
+}
+
+/* Select Options */
+select.form-control,
+select.form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%230071e3' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+    padding-right: 2.5rem;
+}
+
+html.dark-mode select.form-control,
+html.dark-mode select.form-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23f5f5f7' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E");
+}
+
+/* Checkboxes & Radio Buttons */
+.form-check-input {
+    width: 1.2rem;
+    height: 1.2rem;
+    border: 2px solid var(--input-border);
+    border-radius: 6px;
+    background-color: var(--input-bg);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+html.dark-mode .form-check-input {
+    background-color: var(--dark-bg-tertiary);
+    border-color: var(--dark-border);
+}
+
+.form-check-input:checked {
+    background-color: var(--macos-blue);
+    border-color: var(--macos-blue);
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+}
+
+.form-check-input[type="radio"] {
+    border-radius: 50%;
+}
+
+.form-check-input:focus {
+    border-color: var(--macos-blue);
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+}
+
+.form-check-label {
+    color: var(--text-color);
+    font-weight: 500;
+    cursor: pointer;
+    margin-left: 0.5rem;
+}
+
+/* Form Range (Sliders) */
+.form-range {
+    height: 6px;
+}
+
+.form-range .form-range-track {
+    background-color: var(--input-border);
+}
+
+html.dark-mode .form-range .form-range-track {
+    background-color: var(--dark-border);
+}
+
+.form-range .form-range-thumb {
+    width: 1.2rem;
+    height: 1.2rem;
+    border: 2px solid var(--macos-blue);
+    background-color: var(--macos-blue);
+    box-shadow: 0 2px 8px rgba(0, 113, 227, 0.3);
+}
+
+/* Form Floating Labels */
+.form-floating > label {
+    color: var(--macos-gray-5);
+}
+
+html.dark-mode .form-floating > label {
+    color: var(--dark-text-secondary);
+}
+
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-select:focus ~ label {
+    color: var(--macos-blue);
+}
+
+/* Form Validation */
+.form-control.is-invalid,
+.form-select.is-invalid {
+    border-color: var(--macos-red);
+}
+
+.form-control.is-invalid:focus,
+.form-select.is-invalid:focus {
+    border-color: var(--macos-red);
+    box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.1);
+}
+
+.form-control.is-valid,
+.form-select.is-valid {
+    border-color: var(--macos-green);
+}
+
+.form-control.is-valid:focus,
+.form-select.is-valid:focus {
+    border-color: var(--macos-green);
+    box-shadow: 0 0 0 3px rgba(52, 199, 89, 0.1);
+}
+
+.invalid-feedback,
+.valid-feedback {
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-top: 0.25rem;
+}
+
+.invalid-feedback {
+    color: var(--macos-red);
+}
+
+.valid-feedback {
+    color: var(--macos-green);
+}
+
+/* Images - macOS style */
+img {
+    border-radius: 8px;
+}
+
+.img-thumbnail {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.25rem;
+}
+
+html.dark-mode .img-thumbnail {
+    border-color: var(--dark-border);
+}
+
+.rounded-circle {
+    border: 3px solid var(--border-color);
+}
+
+html.dark-mode .rounded-circle {
+    border-color: var(--dark-border);
+}
+
+/* Main Content Area */
+main {
+    background: var(--bg-color);
+    min-height: calc(100vh - 200px);
+    transition: background-color 0.3s ease;
+}
+
+html.light-mode main {
+    background: linear-gradient(180deg, #fafafa 0%, #f5f5f7 100%);
+}
+
+html.dark-mode main {
+    background: var(--dark-bg);
+}
+
+/* Footer */
+footer {
+    background: var(--surface-color);
+    border-top: 1px solid var(--border-color);
+    color: var(--muted-text);
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+footer a {
+    color: var(--macos-blue);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: var(--macos-blue-light);
+}
+
+footer p {
+    color: var(--muted-text);
+}
+
+html.dark-mode footer {
+    background: var(--surface-color);
+    border-top-color: var(--border-color);
+}
+
+/* Badge */
+.badge {
+    border-radius: 6px;
+    padding: 0.4rem 0.8rem;
+    font-weight: 500;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.badge.bg-primary {
+    background-color: var(--macos-blue) !important;
+}
+
+.badge.bg-secondary {
+    background-color: var(--macos-gray-3) !important;
+    color: var(--macos-black) !important;
+}
+
+html.dark-mode .badge.bg-secondary {
+    background-color: var(--dark-bg-tertiary) !important;
+    color: var(--dark-text) !important;
+}
+
+.badge.bg-success {
+    background-color: var(--macos-green) !important;
+}
+
+.badge.bg-danger {
+    background-color: var(--macos-red) !important;
+}
+
+/* Alert */
+.alert {
+    border: none;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    border-left: 4px solid;
+    backdrop-filter: blur(10px);
+}
+
+.alert-success {
+    background-color: rgba(52, 199, 89, 0.1);
+    border-left-color: var(--macos-green);
+    color: var(--macos-green);
+}
+
+.alert-danger {
+    background-color: rgba(255, 59, 48, 0.1);
+    border-left-color: var(--macos-red);
+    color: var(--macos-red);
+}
+
+.alert-warning {
+    background-color: rgba(255, 149, 0, 0.1);
+    border-left-color: var(--macos-orange);
+    color: #b3680f;
+}
+
+html.dark-mode .alert-warning {
+    color: var(--macos-orange);
+}
+
+.alert-info {
+    background-color: rgba(0, 113, 227, 0.1);
+    border-left-color: var(--macos-blue);
+    color: var(--macos-blue);
+}
+
+/* List Group */
+.list-group-item {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.2rem;
+    margin-bottom: 0.75rem;
+    transition: all 0.3s ease;
+    background-color: var(--glass-color);
+    color: var(--text-color);
+}
+
+html.dark-mode .list-group-item {
+    background-color: var(--dark-glass-light);
+}
+
+.list-group-item:first-child {
+    border-radius: 8px;
+}
+
+.list-group-item:last-child {
+    border-radius: 8px;
+}
+
+.list-group-item:hover {
+    background-color: var(--surface-color);
+    border-color: var(--macos-blue);
+    transform: translateX(4px);
+}
+
+.list-group-item.active {
+    background-color: var(--macos-blue);
+    border-color: var(--macos-blue);
+    color: white;
+}
+
+/* Table */
+.table {
+    border-collapse: separate;
+    border-spacing: 0;
+    color: var(--text-color) !important;
+    background-color: var(--glass-color) !important;
+}
+
+html.dark-mode .table {
+    background-color: var(--dark-glass-light) !important;
+    color: var(--dark-text) !important;
+}
+
+.table-bordered {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table thead {
+    background-color: var(--surface-color) !important;
+}
+
+html.dark-mode .table thead {
+    background-color: var(--dark-bg-tertiary) !important;
+}
+
+.table thead th {
+    background-color: var(--surface-color) !important;
+    border: none;
+    color: var(--text-color) !important;
+    font-weight: 600;
+    padding: 1rem;
+    border-bottom: 2px solid var(--border-color) !important;
+}
+
+html.dark-mode .table thead th {
+    background-color: var(--dark-bg-tertiary) !important;
+    border-bottom-color: var(--dark-border) !important;
+    color: var(--dark-text) !important;
+}
+
+.table tbody {
+    background-color: var(--glass-color) !important;
+}
+
+html.dark-mode .table tbody {
+    background-color: var(--dark-glass-light) !important;
+}
+
+.table tbody tr {
+    background-color: var(--glass-color) !important;
+    transition: background-color 0.3s ease;
+}
+
+html.dark-mode .table tbody tr {
+    background-color: var(--dark-glass-light) !important;
+}
+
+.table tbody td {
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.75rem 1rem;
+    color: var(--text-color) !important;
+}
+
+html.dark-mode .table tbody td {
+    border-bottom-color: var(--dark-border) !important;
+    color: var(--dark-text) !important;
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.table tbody tr:hover {
+    background-color: var(--surface-color) !important;
+}
+
+html.dark-mode .table tbody tr:hover {
+    background-color: var(--dark-glass) !important;
+}
+
+.table-light thead th {
+    background-color: var(--surface-color-secondary) !important;
+    color: var(--text-color) !important;
+}
+
+html.dark-mode .table-light thead th {
+    background-color: var(--dark-bg-tertiary) !important;
+    color: var(--dark-text) !important;
+}
+
+.table-hover tbody tr:hover {
+    background-color: var(--surface-color) !important;
+}
+
+html.dark-mode .table-hover tbody tr:hover {
+    background-color: var(--dark-glass) !important;
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.table-danger {
+    background-color: rgba(255, 59, 48, 0.1);
+}
+
+/* Bootstrap table override - Force dark mode colors */
+html.dark-mode .table {
+    --bs-table-bg: var(--dark-glass-light) !important;
+    --bs-table-striped-bg: var(--dark-glass) !important;
+    --bs-table-active-bg: var(--dark-glass) !important;
+    --bs-table-hover-bg: var(--dark-glass) !important;
+    --bs-table-border-color: var(--dark-border) !important;
+    --bs-table-color: var(--dark-text) !important;
+}
+
+html.light-mode .table,
+.table {
+    --bs-table-bg: var(--glass-color) !important;
+    --bs-table-striped-bg: var(--surface-color) !important;
+    --bs-table-active-bg: var(--surface-color) !important;
+    --bs-table-hover-bg: var(--surface-color) !important;
+    --bs-table-border-color: var(--border-color) !important;
+    --bs-table-color: var(--text-color) !important;
+}
+
+/* Pagination */
+.pagination {
+    gap: 0.25rem;
+}
+
+.page-link {
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-color);
+    background-color: var(--glass-color);
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+html.dark-mode .page-link {
+    background-color: var(--dark-glass-light);
+    border-color: var(--border-color);
+}
+
+.page-link:hover {
+    background-color: var(--macos-blue);
+    color: white;
+    border-color: var(--macos-blue);
+}
+
+.page-item.active .page-link {
+    background-color: var(--macos-blue);
+    border-color: var(--macos-blue);
+    color: white;
+}
+
+.page-item.disabled .page-link {
+    color: var(--muted-text);
+    background-color: var(--surface-color);
+    border-color: var(--border-color);
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+html.dark-mode .page-item.disabled .page-link {
+    background-color: var(--dark-bg-tertiary);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+h2 {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+p {
+    line-height: 1.6;
+    color: var(--text-color);
+    opacity: 0.8;
+    transition: color 0.3s ease;
+}
+
+a {
+    color: var(--macos-blue);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #0056b3;
+    text-decoration: none;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease;
+}
+
+/* Smooth scroll behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Selection color */
+::selection {
+    background-color: var(--macos-blue);
+    color: white;
+}
+
+/* Scrollbar macOS style */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 6px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+}
+
+html.dark-mode ::-webkit-scrollbar-thumb {
+    background: var(--dark-border);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--macos-gray-4);
+    border: 3px solid transparent;
+    background-clip: content-box;
+}
+
+html.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background: var(--dark-text-secondary);
+}
+
+/* Dark Mode Toggle Button */
+.dark-mode-toggle {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--glass-color);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 999;
+    font-size: 1.2rem;
+    color: var(--text-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+html.dark-mode .dark-mode-toggle {
+    background: var(--dark-glass);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(0, 113, 227, 0.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dark-mode-toggle:hover {
+        transform: none;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0.75rem 0 !important;
+    }
+    
+    .card-body {
+        padding: 1.5rem;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+    }
+    
+    h2 {
+        font-size: 1.25rem;
+    }
+    
+    .dark-mode-toggle {
+        bottom: 1rem;
+        right: 1rem;
+        width: 45px;
+        height: 45px;
+    }
+}

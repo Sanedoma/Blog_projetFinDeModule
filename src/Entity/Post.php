@@ -28,6 +28,9 @@ class Post
     #[ORM\Column(length: 255)]
     private ?string $picture = null;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private bool $featured = false;
+
     #[ORM\ManyToOne(inversedBy: 'posts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
@@ -98,6 +101,18 @@ class Post
     public function setPicture(string $picture): static
     {
         $this->picture = $picture;
+
+        return $this;
+    }
+
+    public function isFeatured(): bool
+    {
+        return $this->featured;
+    }
+
+    public function setFeatured(bool $featured): static
+    {
+        $this->featured = $featured;
 
         return $this;
     }

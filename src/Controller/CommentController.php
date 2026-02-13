@@ -58,4 +58,30 @@ final class CommentController extends AbstractController
 
         return $this->redirectToRoute('app_post_show', ['id' => $postId->getId()], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/{id}/edit', name: 'app_comment_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_USER')]
+    public function edit(Request $request, Comment $comment, Post $postId, EntityManagerInterface $entityManager): Response
+    {
+        // Vérifier que l'utilisateur est le créateur du commentaire ou admin
+        if ($comment->getUser() !== $this->getUser() && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException('Vous ne pouvez pas modifier ce commentaire');
+        }
+
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+            $this->addFlash('success', 'Commentaire mis à jour avec succès.');
+
+            return $this->redirectToRoute('app_post_show', ['id' => $postId->getId()], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('comment/edit.html.twig', [
+            'comment' => $comment,
+            'form' => $form,
+            'post' => $postId,
+        ]);
+    }
 }

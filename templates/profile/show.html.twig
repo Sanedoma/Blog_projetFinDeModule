@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil - {{ profile_user.firstName }} {{ profile_user.lastName }}{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <h2 class="mb-0">Profil de {{ profile_user.firstName }} {{ profile_user.lastName }}</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-4 text-center">
+                            {% if profile_user.profilePicture %}
+                                <img src="{{ asset('uploads/profiles/' ~ profile_user.profilePicture) }}" 
+                                     alt="Photo de profil de {{ profile_user.firstName }} {{ profile_user.lastName }}" 
+                                     class="img-fluid rounded-circle" 
+                                     style="max-width: 200px; height: 200px; object-fit: cover;">
+                            {% else %}
+                                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center" 
+                                     style="width: 200px; height: 200px; margin: 0 auto;">
+                                    <i class="fas fa-user" style="font-size: 80px; color: #999;"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-8">
+                            <h3>{{ profile_user.firstName }} {{ profile_user.lastName }}</h3>
+                            <p class="text-muted">
+                                <strong>Email :</strong> {{ profile_user.email }}
+                            </p>
+                            <p class="text-muted">
+                                <strong>Membre depuis :</strong> {{ profile_user.createAt|date('d/m/Y') }}
+                            </p>
+                            {% if profile_user.updateAt %}
+                                <p class="text-muted">
+                                    <strong>Dernière modification :</strong> {{ profile_user.updateAt|date('d/m/Y H:i') }}
+                                </p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Articles publiés</h5>
+                            {% if profile_user.posts|length > 0 %}
+                                <p><strong>{{ profile_user.posts|length }}</strong> article(s) publié(s)</p>
+                                <div class="list-group">
+                                    {% for post in profile_user.posts %}
+                                        <a href="{{ path('app_post_show', {'id': post.id}) }}" class="list-group-item list-group-item-action">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <h6 class="mb-1">{{ post.title }}</h6>
+                                                    <p class="mb-1 text-muted small">{{ post.publishAt|date('d/m/Y') }}</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <p class="text-muted">Cet utilisateur n'a pas encore publié d'articles.</p>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Activité</h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <strong>{{ profile_user.posts|length }}</strong> 
+                                    article(s) écrit(s)
+                                </li>
+                                <li class="mb-2">
+                                    <strong>{{ profile_user.comments|length }}</strong> 
+                                    commentaire(s) posté(s)
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="d-flex gap-2">
+                        {% if app.user and app.user.id == profile_user.id %}
+                            <a href="{{ path('app_profile_edit') }}" class="btn btn-primary">
+                                <i class="fas fa-edit"></i> Modifier mon profil
+                            </a>
+                        {% endif %}
+                        <a href="{{ path('app_home') }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Retour
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

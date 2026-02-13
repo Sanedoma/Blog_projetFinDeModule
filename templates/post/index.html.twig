@@ -1,41 +1,57 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Post index{% endblock %}
+{% block title %}Tous les articles{% endblock %}
 
 {% block body %}
-    <h1>Post index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Content</th>
-                <th>PublishAt</th>
-                <th>Picture</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for post in posts %}
-            <tr>
-                <td>{{ post.id }}</td>
-                <td>{{ post.title }}</td>
-                <td>{{ post.content }}</td>
-                <td>{{ post.publishAt ? post.publishAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ post.picture }}</td>
-                <td>
-                    <a href="{{ path('app_post_show', {'id': post.id}) }}">show</a>
-                    <a href="{{ path('app_post_edit', {'id': post.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_post_new') }}">Create new</a>
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="mb-0">Tous les articles</h2>
+                        {% if is_granted('ROLE_USER') %}
+                            <a href="{{ path('app_post_new') }}" class="btn btn-light btn-sm">
+                                <i class="fas fa-plus"></i> Rédiger un article
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if posts|length > 0 %}
+                        <div class="list-group">
+                            {% for post in posts %}
+                                <a href="{{ path('app_post_show', {'id': post.id}) }}" class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between align-items-start mb-2">
+                                        <h5 class="mb-0">{{ post.title }}</h5>
+                                        <small class="text-muted">{{ post.publishAt|date('d/m/Y') }}</small>
+                                    </div>
+                                    <p class="mb-2 text-muted">{{ post.content|slice(0, 150) }}{% if post.content|length > 150 %}...{% endif %}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <span class="badge bg-info">{{ post.category.name }}</span>
+                                            <small class="text-muted ms-2">
+                                                <i class="fas fa-user"></i> {{ post.user.firstName }} {{ post.user.lastName }}
+                                            </small>
+                                        </div>
+                                        <small class="text-muted">
+                                            <i class="fas fa-comments"></i> {{ post.comments|length }} commentaire(s)
+                                        </small>
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            Aucun article trouvé. 
+                            {% if is_granted('ROLE_USER') %}
+                                <a href="{{ path('app_post_new') }}">Soyez le premier à en rédiger un !</a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

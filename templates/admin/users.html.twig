@@ -16,12 +16,14 @@
                             <th>Rôle</th>
                             <th>Articles</th>
                             <th>Commentaires</th>
+                            <th>Statut</th>
                             <th>Date d'inscription</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for user in users %}
-                            <tr>
+                            <tr {% if not user.isActive %}class="table-danger"{% endif %}>
                                 <td><strong>{{ user.firstName }} {{ user.lastName }}</strong></td>
                                 <td>{{ user.email }}</td>
                                 <td>
@@ -33,11 +35,31 @@
                                 </td>
                                 <td><span class="badge bg-info">{{ user.posts|length }}</span></td>
                                 <td><span class="badge bg-success">{{ user.comments|length }}</span></td>
+                                <td>
+                                    {% if user.isActive %}
+                                        <span class="badge bg-success"><i class="fas fa-check-circle"></i> Actif</span>
+                                    {% else %}
+                                        <span class="badge bg-danger"><i class="fas fa-ban"></i> Désactivé</span>
+                                    {% endif %}
+                                </td>
                                 <td>{{ user.createAt ? user.createAt|date('d/m/Y') : 'N/A' }}</td>
+                                <td>
+                                    <form method="POST" action="{{ path('app_admin_user_toggle_active', {'id': user.id}) }}" class="d-inline">
+                                        {% if user.isActive %}
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir désactiver cet utilisateur ?')">
+                                                <i class="fas fa-ban"></i> Désactiver
+                                            </button>
+                                        {% else %}
+                                            <button type="submit" class="btn btn-sm btn-success">
+                                                <i class="fas fa-check-circle"></i> Activer
+                                            </button>
+                                        {% endif %}
+                                    </form>
+                                </td>
                             </tr>
                         {% else %}
                             <tr>
-                                <td colspan="6" class="text-center text-muted py-4">Aucun utilisateur</td>
+                                <td colspan="8" class="text-center text-muted py-4">Aucun utilisateur</td>
                             </tr>
                         {% endfor %}
                     </tbody>

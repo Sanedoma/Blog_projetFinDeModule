@@ -6,6 +6,8 @@ use App\Repository\PostRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\CommentRepository;
 use App\Repository\UserRepository;
+use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -74,5 +76,17 @@ class AdminController extends AbstractController
         return $this->render('admin/comments.html.twig', [
             'comments' => $comments,
         ]);
+    }
+
+    #[Route('/users/{id}/toggle-active', name: 'app_admin_user_toggle_active', methods: ['POST'])]
+    public function toggleUserActive(User $user, EntityManagerInterface $entityManager): Response
+    {
+        $user->setIsActive(!$user->isActive());
+        $entityManager->flush();
+
+        $status = $user->isActive() ? 'activé' : 'désactivé';
+        $this->addFlash('success', "L'utilisateur {$user->getFirstName()} {$user->getLastName()} a été {$status}.");
+
+        return $this->redirectToRoute('app_admin_users');
     }
 }

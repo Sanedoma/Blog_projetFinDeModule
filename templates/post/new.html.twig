@@ -1,11 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Post{% endblock %}
+{% block title %}Créer un nouvel article{% endblock %}
 
 {% block body %}
-    <h1>Create new Post</h1>
-
-    {{ include('post/_form.html.twig') }}
-
-    <a href="{{ path('app_home') }}">back to list</a>
+    {{ include('post/_form.html.twig', {'button_label': 'Créer'}) }}
 {% endblock %}
