@@ -2,82 +2,200 @@
 
 {% block title %}{{ post.title }}{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        .article-content {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-color);
+        }
+
+        .article-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .article-content h2,
+        .article-content h3 {
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .article-content ul,
+        .article-content ol {
+            margin-bottom: 1.5rem;
+            padding-left: 2rem;
+        }
+
+        .article-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .article-content code {
+            background: var(--surface-color);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: var(--macos-red);
+        }
+
+        .article-content pre {
+            background: var(--surface-color);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-content pre code {
+            background: none;
+            padding: 0;
+            color: var(--text-color);
+        }
+
+        .comment-card {
+            border: 1px solid var(--border-color) !important;
+            background: var(--surface-color) !important;
+            border-radius: 12px !important;
+            transition: all 0.3s ease;
+        }
+
+        html.dark-mode .comment-card {
+            background: var(--dark-glass) !important;
+        }
+
+        .comment-form-card {
+            border: 1px solid var(--border-color) !important;
+            background: var(--surface-color) !important;
+            border-radius: 12px !important;
+        }
+
+        html.dark-mode .comment-form-card {
+            background: var(--dark-glass) !important;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-    <div class="container mt-5">
-        <article>
-            <h1>{{ post.title }}</h1>
-            
-            <div class="post-meta mb-4">
-                <small class="text-muted">
-                    Par <strong>{{ post.user.firstName }} {{ post.user.lastName }}</strong> 
-                    | Catégorie: <strong>{{ post.category.name }}</strong>
-                    | Publié le <strong>{{ post.publishAt|date('d/m/Y') }}</strong>
-                </small>
-            </div>
-
-            {% if post.picture %}
-                <img src="{{ post.picture }}" alt="{{ post.title }}" class="img-fluid mb-4" style="max-width: 600px;">
-            {% endif %}
-
-            <div class="post-content mb-5">
-                {{ post.content }}
-            </div>
-
-            {% if app.user and (post.user === app.user or is_granted('ROLE_ADMIN')) %}
-                <div class="mb-4 d-flex gap-2">
-                    <a href="{{ path('app_post_edit', {'id': post.id}) }}" class="btn btn-warning">
-                        <i class="fas fa-edit"></i> Éditer
-                    </a>
-                    <form method="POST" action="{{ path('app_post_delete', {'id': post.id}) }}" style="display:inline;">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ post.id) }}">
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?')">
-                            <i class="fas fa-trash"></i> Supprimer
-                        </button>
-                    </form>
-                </div>
-            {% endif %}
-        </article>
-
-        <hr>
-
-        <section class="comments mt-5">
-            <h2>Commentaires ({{ comments|length }})</h2>
-
-            {% if app.user %}
-                <div class="comment-form mb-5">
-                    <h4>Laisser un commentaire</h4>
-                    {{ include('comment/form.html.twig') }}
-                </div>
-            {% else %}
-                <p><a href="{{ path('app_login') }}">Connectez-vous</a> pour laisser un commentaire.</p>
-            {% endif %}
-
-            {% if comments %}
-                <div class="comments-list">
-                    {% for comment in comments %}
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ comment.user.firstName }} {{ comment.user.lastName }}</h5>
-                                <small class="text-muted">{{ comment.createAt|date('d/m/Y H:i') }}</small>
-                                <p class="card-text mt-2">{{ comment.content }}</p>
-                                
-                                {% if app.user and (comment.user === app.user or is_granted('ROLE_ADMIN')) %}
-                                    <form method="POST" action="{{ path('app_comment_delete', {'postId': post.id, 'id': comment.id}) }}" style="display:inline;">
-                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comment.id) }}">
-                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr ?')">Supprimer</button>
-                                    </form>
-                                {% endif %}
+    <div class="container-lg my-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <article class="post-article">
+                    <!-- Article Header -->
+                    <div class="article-header mb-4">
+                        <h1 class="article-title">{{ post.title }}</h1>
+                        
+                        <div class="article-meta d-flex align-items-center flex-wrap gap-3">
+                            {% if post.user.profilePicture %}
+                                <img src="{{ asset('uploads/profiles/' ~ post.user.profilePicture) }}" alt="Profile" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+                            {% else %}
+                                <i class="fas fa-user-circle" style="font-size: 2.5rem;"></i>
+                            {% endif %}
+                            
+                            <div class="flex-grow-1">
+                                <p class="mb-1"><strong>{{ post.user.firstName }} {{ post.user.lastName }}</strong></p>
+                                <small class="text-muted">{{ post.publishAt|date('d M Y') }}</small>
                             </div>
+                            
+                            <span class="badge badge-category">
+                                <i class="fas fa-tag"></i> {{ post.category.name }}
+                            </span>
                         </div>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <p>Aucun commentaire pour le moment.</p>
-            {% endif %}
-        </section>
+                    </div>
 
-        <div class="mt-4">
-            <a href="{{ path('app_home') }}" class="btn btn-secondary">← Retour à l'accueil</a>
+                    <!-- Article Image -->
+                    {% if post.picture %}
+                        <img src="{{ post.picture }}" alt="{{ post.title }}" class="img-fluid rounded mb-4" style="max-width: 100%; height: auto;">
+                    {% endif %}
+
+                    <!-- Article Content -->
+                    <div class="article-content mb-5">
+                        {{ post.content }}
+                    </div>
+
+                    <!-- Article Actions -->
+                    {% if app.user and (post.user === app.user or is_granted('ROLE_ADMIN')) %}
+                        <div class="article-actions mb-4 d-flex gap-2">
+                            <a href="{{ path('app_post_edit', {'id': post.id}) }}" class="btn btn-warning">
+                                <i class="fas fa-edit"></i> Éditer
+                            </a>
+                            <form method="POST" action="{{ path('app_post_delete', {'id': post.id}) }}" style="display:inline;">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ post.id) }}">
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?')">
+                                    <i class="fas fa-trash"></i> Supprimer
+                                </button>
+                            </form>
+                        </div>
+                    {% endif %}
+
+                    <hr class="my-5">
+
+                    <!-- Comments Section -->
+                    <section class="comments-section">
+                        <h2 class="mb-4">
+                            <i class="fas fa-comments me-2"></i>Commentaires ({{ comments|length }})
+                        </h2>
+
+                        {% if app.user %}
+                            <div class="comment-form-card card mb-5">
+                                <div class="card-header">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-comment-dots me-2"></i>Laisser un commentaire
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    {{ include('comment/form.html.twig') }}
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-info mb-4">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <a href="{{ path('app_login') }}">Connectez-vous</a> pour laisser un commentaire.
+                            </div>
+                        {% endif %}
+
+                        {% if comments %}
+                            <div class="comments-list">
+                                {% for comment in comments %}
+                                    <div class="comment-card card mb-3">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                                <div>
+                                                    <h5 class="card-title mb-1">{{ comment.user.firstName }} {{ comment.user.lastName }}</h5>
+                                                    <small class="text-muted">
+                                                        <i class="fas fa-clock"></i> {{ comment.createAt|date('d M Y \\à H:i') }}
+                                                    </small>
+                                                </div>
+                                                {% if app.user and (comment.user === app.user or is_granted('ROLE_ADMIN')) %}
+                                                    <form method="POST" action="{{ path('app_comment_delete', {'postId': post.id, 'id': comment.id}) }}" style="display:inline;">
+                                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comment.id) }}">
+                                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr ?')">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                {% endif %}
+                                            </div>
+                                            <p class="card-text mt-3">{{ comment.content }}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="alert alert-info">
+                                <i class="fas fa-inbox"></i> Aucun commentaire pour le moment. Soyez le premier !
+                            </div>
+                        {% endif %}
+                    </section>
+                </article>
+
+                <!-- Navigation -->
+                <div class="mt-5 pt-4 border-top">
+                    <a href="{{ path('app_home') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-chevron-left me-2"></i>Retour à l'accueil
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

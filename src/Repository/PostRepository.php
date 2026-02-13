@@ -20,7 +20,7 @@ class PostRepository extends ServiceEntityRepository
      * Find posts with optional filters
      * @return Post[] Returns an array of Post objects
      */
-    public function findWithFilters(?int $categoryId = null, ?int $authorId = null, ?string $dateFrom = null, ?string $dateTo = null): array
+    public function findWithFilters(?int $categoryId = null, ?int $authorId = null, ?string $dateFrom = null, ?string $dateTo = null, ?string $search = null): array
     {
         $qb = $this->createQueryBuilder('p')
             ->orderBy('p.publishAt', 'DESC');
@@ -46,6 +46,11 @@ class PostRepository extends ServiceEntityRepository
             $endDate->modify('+1 day');
             $qb->andWhere('p.publishAt < :dateTo')
                ->setParameter('dateTo', $endDate);
+        }
+
+        if ($search) {
+            $qb->andWhere('p.title LIKE :search OR p.content LIKE :search')
+               ->setParameter('search', '%' . $search . '%');
         }
 
         return $qb->getQuery()->getResult();

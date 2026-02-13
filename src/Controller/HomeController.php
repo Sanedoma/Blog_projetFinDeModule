@@ -26,19 +26,21 @@ final class HomeController extends AbstractController
         $authorId = $request->query->get('author');
         $dateFrom = $request->query->get('date_from');
         $dateTo = $request->query->get('date_to');
+        $search = $request->query->get('q');
 
         $posts = $postRepository->findWithFilters(
             $categoryId ? (int)$categoryId : null,
             $authorId ? (int)$authorId : null,
             $dateFrom,
-            $dateTo
+            $dateTo,
+            $search
         );
 
         // Paginate results (12 per page)
         $pagination = $paginator->paginate(
             $posts,
             $request->query->getInt('page', 1),
-            12
+            5
         );
 
         return $this->render('home/index.html.twig', [
@@ -49,6 +51,7 @@ final class HomeController extends AbstractController
             'selectedAuthor' => $authorId,
             'selectedDateFrom' => $dateFrom,
             'selectedDateTo' => $dateTo,
+            'searchQuery' => $search,
         ]);
     }
 }

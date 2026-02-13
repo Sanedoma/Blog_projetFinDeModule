@@ -23,38 +23,84 @@
         <script src="{{ asset('dark-mode.js') }}"></script>
         
         <!-- Navigation (macOS Style) -->
-        <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-navbar">
             <div class="container-lg">
-                <a class="navbar-brand" href="{{ path('app_home') }}">
-                    <i class="fas fa-feather"></i> Blog
+                <a class="navbar-brand fw-bold" href="{{ path('app_home') }}">
+                    <i class="fas fa-feather me-2"></i><span>SyFblog</span>
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fas fa-bars"></i>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="{{ path('app_home') }}"><i class="fas fa-home"></i> Accueil</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ path('app_post_index') }}"><i class="fas fa-book"></i> Articles</a></li>
+                    <form method="GET" action="{{ path('app_home') }}" class="d-flex search-form me-auto mx-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control search-input" name="q" placeholder="Rechercher un article..." value="{{ app.request.query.get('q', '') }}">
+                            <button class="btn btn-search" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <ul class="navbar-nav ms-auto align-items-center gap-3">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{ path('app_home') }}">
+                                <i class="fas fa-home"></i> <span>Accueil</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_post_index') }}">
+                                <i class="fas fa-book"></i> <span>Articles</span>
+                            </a>
+                        </li>
                         {% if app.user %}
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ path('app_admin_dashboard') }}">
+                                        <i class="fas fa-tachometer-alt"></i> <span>Admin</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            <li class="nav-item">
+                                <button class="btn btn-nav-theme" id="themeToggle" title="Changer de thème">
+                                    <i class="fas fa-moon"></i>
+                                </button>
+                            </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-user-circle"></i> {{ app.user.firstName }}
+                                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    {% if app.user.profilePicture %}
+                                        <img src="{{ asset('uploads/profiles/' ~ app.user.profilePicture) }}" alt="Profile" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
+                                    {% else %}
+                                        <i class="fas fa-user-circle" style="font-size: 1.5rem;"></i>
+                                    {% endif %}
+                                    <span class="ms-2 d-none d-lg-inline">{{ app.user.firstName }}</span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
                                     <li><a class="dropdown-item" href="{{ path('app_profile_index') }}"><i class="fas fa-id-card"></i> Mon profil</a></li>
                                     <li><a class="dropdown-item" href="{{ path('app_profile_edit') }}"><i class="fas fa-edit"></i> Modifier mon profil</a></li>
                                     <li><a class="dropdown-item" href="{{ path('app_post_new') }}"><i class="fas fa-plus-circle"></i> Rédiger un article</a></li>
-                                    <li><hr class="dropdown-divider"></li>
                                     {% if is_granted('ROLE_ADMIN') %}
-                                        <li><a class="dropdown-item" href="{{ path('app_admin_dashboard') }}"><i class="fas fa-tachometer-alt"></i> Dashboard admin</a></li>
                                         <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="{{ path('app_admin_dashboard') }}"><i class="fas fa-cogs"></i> Paramètres admin</a></li>
                                     {% endif %}
-                                    <li><a class="dropdown-item" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-danger" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
                                 </ul>
                             </li>
                         {% else %}
-                            <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}"><i class="fas fa-sign-in-alt"></i> Connexion</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ path('app_register') }}"><i class="fas fa-user-plus"></i> Inscription</a></li>
+                            <li class="nav-item">
+                                <button class="btn btn-nav-theme" id="themeToggle" title="Changer de thème">
+                                    <i class="fas fa-moon"></i>
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_login') }}">
+                                    <i class="fas fa-sign-in-alt"></i> <span>Connexion</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-primary btn-sm" href="{{ path('app_register') }}">
+                                    <i class="fas fa-user-plus"></i> <span>Inscription</span>
+                                </a>
+                            </li>
                         {% endif %}
                     </ul>
                 </div>

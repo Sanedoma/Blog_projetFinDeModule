@@ -8,6 +8,7 @@ use App\Form\CommentType;
 use App\Form\PostType;
 use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,10 +19,18 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class PostController extends AbstractController
 {
     #[Route(name: 'app_post_index', methods: ['GET'])]
-    public function index(PostRepository $postRepository): Response
+    public function index(Request $request, PostRepository $postRepository, PaginatorInterface $paginator): Response
     {
+        $posts = $postRepository->findBy([], ['publishAt' => 'DESC']);
+        
+        $pagination = $paginator->paginate(
+            $posts,
+            $request->query->getInt('page', 1),
+            12
+        );
+
         return $this->render('post/index.html.twig', [
-            'posts' => $postRepository->findAll(),
+            'pagination' => $pagination,
         ]);
     }
 

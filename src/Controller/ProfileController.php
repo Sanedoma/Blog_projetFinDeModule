@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 #[Route('/profile')]
 final class ProfileController extends AbstractController
@@ -28,7 +30,7 @@ final class ProfileController extends AbstractController
 
     #[Route('/edit', name: 'app_profile_edit', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_USER')]
-    public function edit(Request $request, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $user = $this->getUser();
 
@@ -36,6 +38,34 @@ final class ProfileController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Handle file upload
+            $profilePictureFile = $form->get('profilePicture')->getData();
+            if ($profilePictureFile) {
+                $originalFilename = pathinfo($profilePictureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $profilePictureFile->guessExtension();
+
+                try {
+                    $profilePictureFile->move(
+                        $this->getParameter('profiles_directory'),
+                        $newFilename
+                    );
+                } catch (\Exception $e) {
+                    $this->addFlash('danger', 'Erreur lors du téléchargement de la photo.');
+                    return $this->redirectToRoute('app_profile_edit');
+                }
+
+                // Delete old profile picture if it exists
+                if ($user->getProfilePicture()) {
+                    $oldPath = $this->getParameter('profiles_directory') . '/' . $user->getProfilePicture();
+                    if (file_exists($oldPath)) {
+                        unlink($oldPath);
+                    }
+                }
+
+                $user->setProfilePicture($newFilename);
+            }
+
             $user->setUpdateAt(new \DateTimeImmutable());
             $entityManager->flush();
 

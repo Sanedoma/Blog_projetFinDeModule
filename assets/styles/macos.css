@@ -190,11 +190,28 @@ html.dark-mode .alert-danger {
 }
 
 /* Navigation Bar - macOS Style with Glass */
+.bg-navbar {
+    background: var(--glass-color) !important;
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.75rem 0 !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+html.dark-mode .bg-navbar {
+    background: var(--dark-glass) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
 .navbar {
     background: var(--glass-color) !important;
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border-color);
-    padding: 0.5rem 0 !important;
+    padding: 0.75rem 0 !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
     position: sticky;
     top: 0;
@@ -208,15 +225,30 @@ html.dark-mode .navbar {
 }
 
 .navbar-brand {
-    font-weight: 600;
-    font-size: 1.3rem;
+    font-weight: 700;
+    font-size: 1.4rem;
     color: var(--text-color) !important;
     letter-spacing: -0.5px;
     transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
 }
 
 .navbar-brand:hover {
     color: var(--macos-blue) !important;
+}
+
+.navbar-brand i {
+    font-size: 1.5rem;
+}
+
+.navbar-toggler {
+    color: var(--text-color) !important;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+    border: none;
 }
 
 .nav-link {
@@ -224,7 +256,10 @@ html.dark-mode .navbar {
     font-weight: 500;
     font-size: 0.95rem;
     margin: 0 0.5rem;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
 }
 
 html.dark-mode .nav-link {
@@ -233,10 +268,75 @@ html.dark-mode .nav-link {
 
 .nav-link:hover {
     color: var(--macos-blue) !important;
+    transform: translateY(-2px);
 }
 
 .nav-link.active {
     color: var(--macos-blue) !important;
+}
+
+.nav-link i {
+    font-size: 1.1rem;
+    margin-right: 0.5rem;
+}
+
+.nav-link span {
+    transition: color 0.3s ease;
+}
+
+/* Theme Toggle Button in Navbar */
+.btn-nav-theme {
+    background: rgba(0, 113, 227, 0.1) !important;
+    color: var(--macos-blue) !important;
+    border: 1px solid rgba(0, 113, 227, 0.3) !important;
+    padding: 0.5rem 0.75rem !important;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.btn-nav-theme:hover {
+    background: rgba(0, 113, 227, 0.2) !important;
+    transform: scale(1.05);
+}
+
+html.dark-mode .btn-nav-theme {
+    background: rgba(10, 132, 255, 0.15) !important;
+    border-color: rgba(10, 132, 255, 0.3) !important;
+}
+
+/* Dropdown Menu Styling */
+.dropdown-menu {
+    background: var(--surface-color) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15) !important;
+    backdrop-filter: blur(10px) !important;
+    padding: 0.5rem 0 !important;
+}
+
+html.dark-mode .dropdown-menu {
+    background: var(--dark-glass) !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4) !important;
+}
+
+.dropdown-item {
+    color: var(--text-color) !important;
+    transition: all 0.3s ease;
+    padding: 0.7rem 1.5rem !important;
+}
+
+.dropdown-item:hover {
+    background: var(--surface-color-secondary) !important;
+    color: var(--macos-blue) !important;
+}
+
+html.dark-mode .dropdown-item:hover {
+    background: var(--dark-bg-tertiary) !important;
+}
+
+.dropdown-divider {
+    border-color: var(--border-color) !important;
 }
 
 /* Dropdown Menu */
@@ -274,7 +374,110 @@ html.dark-mode .dropdown-menu {
     margin: 0.3rem 0 !important;
 }
 
-/* Buttons */
+/* Search Bar */
+.search-form {
+    flex: 0 1 auto;
+}
+
+.search-input {
+    background: var(--surface-color) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-color) !important;
+    border-radius: 8px 0 0 8px !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    min-width: 200px;
+}
+
+.search-input::placeholder {
+    color: var(--muted-text) !important;
+}
+
+.search-input:focus {
+    background: white !important;
+    border-color: var(--macos-blue) !important;
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1) !important;
+    color: var(--text-color) !important;
+}
+
+html.dark-mode .search-input {
+    background: var(--dark-glass) !important;
+}
+
+html.dark-mode .search-input:focus {
+    background: var(--dark-bg-tertiary) !important;
+}
+
+.btn-search {
+    background: var(--macos-blue) !important;
+    color: white !important;
+    border: 1px solid var(--macos-blue) !important;
+    border-radius: 0 8px 8px 0 !important;
+    padding: 0.5rem 1rem !important;
+    transition: all 0.3s ease;
+}
+
+.btn-search:hover {
+    background: var(--macos-blue-light) !important;
+    border-color: var(--macos-blue-light) !important;
+    box-shadow: 0 2px 8px rgba(0, 113, 227, 0.3);
+}
+
+.btn-search:focus {
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.2) !important;
+}
+
+/* Page Header Section */
+.page-header {
+    background: linear-gradient(135deg, var(--macos-blue) 0%, var(--macos-blue-light) 100%);
+    color: white;
+    padding: 4rem 0;
+    margin-top: -2px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.page-subtitle {
+    font-size: 1.1rem;
+    opacity: 0.95;
+    margin: 0;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.page-header .btn-lg {
+    font-weight: 600;
+    padding: 0.7rem 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.page-header .btn-primary {
+    background: white !important;
+    color: var(--macos-blue) !important;
+    border: 2px solid white !important;
+}
+
+.page-header .btn-primary:hover {
+    background: var(--macos-gray-1) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Post Card Placeholder */
+.post-placeholder {
+    border-bottom: 1px solid var(--border-color);
+}
+
+html.dark-mode .post-placeholder {
+    opacity: 0.8;
+}/* Buttons */
 .btn {
     border-radius: 8px;
     font-weight: 500;
@@ -719,7 +922,235 @@ html.dark-mode main {
     background: var(--dark-bg);
 }
 
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, var(--macos-blue) 0%, var(--macos-blue-light) 100%);
+    color: white;
+    padding: 5rem 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin-top: -2px;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="rgba(255,255,255,0.1)" fill-rule="nonzero"><path d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/></g></g></svg>') repeat;
+    pointer-events: none;
+}
+
+.hero-section > div {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+    opacity: 0.95;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
+}
+
+.hero-section .btn {
+    font-weight: 600;
+    padding: 0.7rem 1.5rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.hero-section .btn-primary {
+    background: white;
+    color: var(--macos-blue);
+    border: 2px solid white;
+}
+
+.hero-section .btn-primary:hover {
+    background: var(--macos-gray-1);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.hero-section .btn-outline-primary {
+    color: white;
+    border: 2px solid white;
+    background: transparent;
+}
+
+.hero-section .btn-outline-primary:hover {
+    background: white;
+    color: var(--macos-blue);
+    transform: translateY(-2px);
+}
+
+html.dark-mode .hero-section {
+    background: linear-gradient(135deg, var(--macos-blue) 0%, var(--macos-blue-light) 100%);
+}
+
+/* Filter Card */
+.filter-card {
+    border: 1px solid var(--border-color) !important;
+    background: var(--surface-color) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.filter-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+html.dark-mode .filter-card {
+    background: var(--dark-glass) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.filter-card .card-header {
+    background: transparent !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    padding: 1.25rem !important;
+    color: var(--text-color);
+}
+
+.filter-card .card-header i {
+    color: var(--macos-blue);
+}
+
+.filter-card .form-label {
+    color: var(--text-color);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.filter-card .form-label i {
+    margin-right: 0.5rem;
+    color: var(--macos-blue);
+}
+
+/* Post Cards */
+.post-card {
+    border: 1px solid var(--border-color) !important;
+    background: var(--surface-color) !important;
+    border-radius: 12px !important;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.post-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+html.dark-mode .post-card {
+    background: var(--dark-glass) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+html.dark-mode .post-card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.post-card .card-title {
+    color: var(--text-color);
+    font-weight: 600;
+    transition: color 0.3s ease;
+    line-height: 1.4;
+}
+
+.post-card:hover .card-title {
+    color: var(--macos-blue);
+}
+
+.post-card .card-text {
+    color: var(--muted-text);
+    line-height: 1.5;
+}
+
+.post-card .badge-author {
+    background: var(--macos-blue-light) !important;
+    color: white !important;
+    padding: 0.4rem 0.8rem !important;
+    border-radius: 6px !important;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+}
+
+.post-card .badge-author:hover {
+    background: var(--macos-blue) !important;
+    transform: scale(1.05);
+}
+
+.post-card .badge-category {
+    background: var(--macos-orange) !important;
+    color: white !important;
+    padding: 0.4rem 0.8rem !important;
+    border-radius: 6px !important;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+}
+
+.post-card .badge-category:hover {
+    background: #ff8500 !important;
+    transform: scale(1.05);
+}
+
+/* Pagination */
+.pagination {
+    gap: 0.5rem;
+    margin-top: 2rem;
+}
+
+.page-link {
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-color) !important;
+    background: var(--surface-color) !important;
+    border-radius: 8px !important;
+    padding: 0.5rem 0.75rem !important;
+    transition: all 0.3s ease;
+}
+
+.page-link:hover {
+    background: var(--macos-blue) !important;
+    color: white !important;
+    border-color: var(--macos-blue) !important;
+    transform: translateY(-2px);
+}
+
+.page-item.active .page-link {
+    background: var(--macos-blue) !important;
+    border-color: var(--macos-blue) !important;
+    color: white !important;
+}
+
+.page-item.disabled .page-link {
+    color: var(--muted-text) !important;
+    background: var(--surface-color-secondary) !important;
+    cursor: not-allowed;
+}
+
+html.dark-mode .page-link {
+    background: var(--dark-glass) !important;
+}
+
+html.dark-mode .page-link:hover {
+    background: var(--macos-blue) !important;
+}
+
 /* Footer */
+
 footer {
     background: var(--surface-color);
     border-top: 1px solid var(--border-color);
